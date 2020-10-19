@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -18,6 +19,7 @@ public class SecondActivity extends AppCompatActivity {
 
         //SET UP WEB VIEWS TO VIEW NEWS ARTICLES
         WebView webView = findViewById(R.id.news_webview);
+        webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
 
