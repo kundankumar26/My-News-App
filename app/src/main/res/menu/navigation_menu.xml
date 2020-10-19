@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/business"
+        android:icon="@drawable/ic_business_plan"
+        android:title="@string/business_string"/>
+
+    <item android:id="@+id/entertainment"
+        android:icon="@drawable/ic_camera_film"
+        android:title="@string/entertainment_string"/>
+
+    <item android:id="@+id/health"
+        android:icon="@drawable/ic_news_report"
+        android:title="@string/health_string"/>
+
+    <item
+        android:id="@+id/science"
+        android:icon="@drawable/ic_molecule"
+        android:title="@string/science_string" />
+
+    <item android:id="@+id/sports"
+        android:icon="@drawable/ic_sport_equipment"
+        android:title="@string/sports_string"/>
+
+    <item android:id="@+id/technology"
+        android:icon="@drawable/ic_technology"
+        android:title="@string/technology_string"/>
+</menu>

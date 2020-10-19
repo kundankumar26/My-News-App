@@ -1,6 +1,14 @@
 <resources>
-    <string name="app_name">MyNews</string>
+    <string name="app_name">My News</string>
     <string name="author_name">Author name</string>
     <string name="date_of_item">Date of Item</string>
     <string name="title_string">This is title and it is 2 line expanded item try to resize it</string>
+    <string name="business_string">Business</string>
+    <string name="entertainment_string">Entertainment</string>
+    <string name="health_string">Health</string>
+    <string name="science_string">Science</string>
+    <string name="sports_string">Sports</string>
+    <string name="technology_string">Technology</string>
+    <string name="Open">Open</string>
+    <string name="Close">Close</string>
 </resources>
