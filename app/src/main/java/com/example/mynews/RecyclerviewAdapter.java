@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.snackbar.Snackbar;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ import java.util.Date;
 public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapter.MyViewHolder> {
     Context mContext;
     ArrayList<NewsObject> newsObjectArrayList;
+
+    //DEFAULT CONSTRUCTOR FOR THE CURRENT CLASS
     public RecyclerviewAdapter(Context context, ArrayList<NewsObject> newsList){
         mContext = context;
         newsObjectArrayList = newsList;
@@ -44,8 +47,12 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
         final NewsObject currentNewsObject = newsObjectArrayList.get(position);
 
         //GET IMAGES OF EVERY ARTICLE IN BACKGROUND AND DISPLAY IT
-        //Picasso.get().load(currentNewsObject.getUrlToImage()).networkPolicy(NetworkPolicy.OFFLINE).into(holder.newsImageview);
-        Glide.with(mContext).load(currentNewsObject.getUrlToImage()).centerCrop().diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.newsImageview);
+        Glide.with(mContext)
+                .load(currentNewsObject.getUrlToImage())
+                .placeholder(R.drawable.ic_tv)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(holder.newsImageview);
 
         //PARSE PUBLISHED DATE TO SHOW ONLY DAY AND MONTH ANS SET IT IN TEXTVIEW
         String newsPublishedDate = parseNewsPublishedDate(currentNewsObject.getPublishedAt());
@@ -59,6 +66,10 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
         String newsAuthor = ParseNewsAuthor(currentNewsObject.getAuthor());
         holder.newsAuthorTextview.setText(newsAuthor);
 
+        String newsDescription = parseNewsDescription(currentNewsObject.getDescription());
+        holder.newsDescriptionTextview.setText(newsDescription);
+
+
         holder.newsLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +80,7 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
                     mContext.startActivity(intent);
                 } else {
                     //SHOW INTERNET IS NOT AVAILABLE
-                    Snackbar.make(v, "Internet is not available", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(v, "Internet nahi hai, Baad me dekhiye", Snackbar.LENGTH_LONG).show();
                 }
             }
 
@@ -84,7 +95,25 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
                 return false;
             }
         });
+
+        holder.shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("*/*");
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, newsObjectArrayList.get(position).getUrl());
+                //shareIntent.setFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                mContext.startActivity(Intent.createChooser(shareIntent, "Share File Using!"));
+
+            }
+
+        });
+
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -97,6 +126,8 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
         TextView newsAuthorTextview;
         TextView newsPublishedDateTextview;
         LinearLayout newsLinearLayout;
+        TextView newsDescriptionTextview;
+        ImageButton shareButton;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -106,6 +137,8 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
             newsAuthorTextview = itemView.findViewById(R.id.news_author_textview);
             newsPublishedDateTextview = itemView.findViewById(R.id.news_published_date_textview);
             newsLinearLayout = itemView.findViewById(R.id.news_linear_layout);
+            newsDescriptionTextview = itemView.findViewById(R.id.news_description_textview);
+            shareButton = itemView.findViewById(R.id.share_button);
         }
     }
 
@@ -125,6 +158,18 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
             return "Author: " + newsAuthorString;
         }
         return "";
+    }
+
+    private String parseNewsDescription(String description) {
+        if(description.length() < 5){
+            return "";
+        }
+        for(int i = description.length() - 1; i >= 0; i--){
+            if(description.charAt(i) == '['){
+                return description.substring(0, i);
+            }
+        }
+        return description;
     }
 
     private String parseNewsTitle(String newsTitle) {
