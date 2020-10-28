@@ -6,24 +6,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/backgroudn_color"
-        tools:context=".MainActivity">
+        android:layout_height="match_parent">
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/news_recyclerview"
+        <RelativeLayout
+            android:id="@+id/screenshot_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/backgroudn_color"
+            tools:context=".MainActivity">
 
-        <LinearLayout
-            android:id="@+id/snackbar_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" />
-     </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/news_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:id="@+id/snackbar_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+<!--            <Button-->
+<!--                android:id="@+id/share_button"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="80dp"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:text="Share" />-->
+
+        </RelativeLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
@@ -33,6 +49,5 @@
         app:headerLayout="@layout/nav_header"
         app:theme="@style/menu_text_style"
         android:id="@+id/nav_menu" />
-
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -25,4 +25,8 @@
     <item android:id="@+id/technology"
         android:icon="@drawable/ic_technology"
         android:title="@string/technology_string"/>
+
+    <item android:id="@+id/about"
+        android:icon="@drawable/ic_information_desk"
+        android:title="@string/about_strin"/>
 </menu>

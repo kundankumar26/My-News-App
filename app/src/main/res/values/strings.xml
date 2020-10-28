@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My News</string>
+    <string name="app_name">Taja Khabar</string>
     <string name="author_name">Author name</string>
     <string name="date_of_item">Date of Item</string>
     <string name="title_string">This is title and it is 2 line expanded item try to resize it</string>
@@ -11,4 +11,16 @@
     <string name="technology_string">Technology</string>
     <string name="Open">Open</string>
     <string name="Close">Close</string>
+    <string name="about_strin">About</string>
+    <string name="splash_screen_slogan">News jo padhke maja aa jaye</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="about_layout_app_summary_text">This app is made for educational purpose only. It doesn\'t contain
+        any ads or will contain in future.</string>
+    <string name="about_layout_icons">All the icons used are from www.flaticon.com, do checkout for some cool icons.</string>
+    <string name="about_us_textview">About Us</string>
 </resources>
