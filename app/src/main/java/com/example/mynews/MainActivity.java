@@ -94,18 +94,15 @@ public class MainActivity extends AppCompatActivity {
     //CREATE SWIPE UP REFRESH LAYOUT
     SwipeRefreshLayout swipeRefreshLayout;
 
+    //NO INTERNET TEXTLABEL
+    TextView internetErrorTextview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
-
         Objects.requireNonNull(getSupportActionBar()).setTitle("");
-
 
         //CREATING DATABASE
         sqlDatabase = this.openOrCreateDatabase("news", MODE_PRIVATE, null);
@@ -122,11 +119,6 @@ public class MainActivity extends AppCompatActivity {
 
         //CALL REFRESH ON RECYCLERVIEW
         RefreshRecyclerViewDataset();
-
-
-
-
-
     }
 
     /**
@@ -150,6 +142,9 @@ public class MainActivity extends AppCompatActivity {
      * THIS METHOD CREATE THE NAVIGATION DRAWER IN THE MAIN LAYOUT
      */
     private void navigationViewCreate() {
+        //FIND THE INTERNET PROBLEM TEXTVIEW
+        internetErrorTextview = findViewById(R.id.nothing_to_show_textview);
+
         //FIND THE DRAWER LAYOUT ID
         drawerLayout = findViewById(R.id.activity_main);
 
@@ -190,6 +185,11 @@ public class MainActivity extends AppCompatActivity {
                 //CHECK IF INTERNET CONNECTION IS THERE
                 if(!isNetworkStatusAvailable (getApplicationContext())) {
                     Snackbar.make(findViewById(R.id.snackbar_textView), "Internet nahi hai, Baad me try kejeye", Snackbar.LENGTH_LONG).show();
+
+                    String internetErrorMessage = "Internet nahi hai";
+
+                    internetErrorTextview.setVisibility(View.VISIBLE);
+                    internetErrorTextview.setText(internetErrorMessage);
                     return true;
                 }
 
@@ -275,6 +275,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             DownloadTask task = new DownloadTask();
             String apiKey = "237f852c2ae8467f857e34660c2a18d8";
+            //http://newsapi.org/v2/top-headlines?country=in&category=entertainment&pageSize=100&apiKey=237f852c2ae8467f857e34660c2a18d8
             String newUrl = "https://newsapi.org/v2/top-headlines?country=in&category=" + category + "&pageSize=100&apiKey=" + apiKey;
             task.execute(newUrl);
             updateDatabase();
@@ -383,6 +384,8 @@ public class MainActivity extends AppCompatActivity {
                                 continue;
                             }
 
+                            Log.i(TAG, newsAuthor);
+
                             //INSERT VALUES IN THE DATABASE
                             SQLiteStatement statement = sqlDatabase.compileStatement("INSERT INTO news(author, title, description, url, urlToImage, publishedAt) " +
                                     "VALUES(?, ?, ?, ?, ?, ?)");
@@ -402,8 +405,13 @@ public class MainActivity extends AppCompatActivity {
 
             } catch (IOException | JSONException e) {
                 String errorMessage = "Kuch problem hua API me, Baad me try kejeyega";
-                //Log.i("API parsing se", errorMessage);
                 Snackbar.make(findViewById(R.id.snackbar_textView), errorMessage, Snackbar.LENGTH_LONG).show();
+
+                String internetErrorMessage = "Error accessing Api";
+                internetErrorTextview = findViewById(R.id.nothing_to_show_textview);
+                internetErrorTextview.setVisibility(View.VISIBLE);
+                internetErrorTextview.setText(internetErrorMessage);
+
                 e.printStackTrace();
             }
             return null;
@@ -447,6 +455,7 @@ public class MainActivity extends AppCompatActivity {
                 while ((line = bufferedReader.readLine()) != null) {
                     sb.append(line).append("\n");
                 }
+
                 return sb.toString();
 
             } catch (MalformedURLException e) {
